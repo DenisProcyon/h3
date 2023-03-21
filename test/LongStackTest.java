@@ -149,6 +149,49 @@ public class LongStackTest {
       m.tos();
    }
 
+   @Test (expected=RuntimeException.class)
+   public void testErrorDup() {
+      String dupString = "4 DUP * * *";
+      LongStack.interpret(dupString);
+   }
+
+   @Test (timeout = 1000)
+   public void testHard(){
+      String hardString = "-3 -5 -7 ROT - SWAP DUP * +";
+      assertEquals("expression: " + hardString, 21, LongStack.interpret(hardString));
+   }
+
+   @Test (timeout = 1000)
+   public void testRot(){
+      String rotString = "10 10 10 ROT + +";
+      assertEquals("expression: " + rotString, 30, LongStack.interpret(rotString));
+      rotString = "10 20 40 ROT - +";
+      assertEquals("expression: " +  rotString, 50, LongStack.interpret(rotString));
+      rotString = "2 5 9 ROT - +";
+      assertEquals("expression: " + rotString, 12, LongStack.interpret(rotString));
+
+   }
+
+   @Test (timeout = 1000)
+   public void testDup(){
+      String dupString = "4 DUP *";
+      assertEquals("expression: " + dupString, 16, LongStack.interpret(dupString));
+      dupString = "1000 DUP /";
+      assertEquals("expression: " + dupString, 1, LongStack.interpret(dupString));
+      dupString = "1000 dup -";
+      assertEquals("expression: " + dupString, 0, LongStack.interpret(dupString));
+   }
+
+   @Test(timeout = 1000)
+   public void testSwap(){
+      String swapString = "2 5 SWAP -";
+      assertEquals("expression: " + swapString, 3, LongStack.interpret(swapString));
+      swapString = "12 1 SwAp -";
+      assertEquals("expression: " + swapString, -11, LongStack.interpret(swapString));
+      swapString = "20 40 swap +";
+      assertEquals("expression: " + swapString, 60, LongStack.interpret(swapString));
+   }
+
    @Test (timeout=1000)
    public void testInterpret() {
       String s = "1";
